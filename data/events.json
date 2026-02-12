@@ -1,0 +1,23 @@
+[
+    {
+        "id": "evt-001",
+        "title": "Antigravity Design Summit 2026",
+        "date": "2026-03-15",
+        "description": "A premier gathering of designers and creatives pushing the boundaries of modern aesthetics. Featuring keynote speakers, hands-on workshops, and networking sessions in a stunning venue.",
+        "createdAt": "2026-02-12T00:00:00.000Z"
+    },
+    {
+        "id": "evt-002",
+        "title": "Future of Tech Conference",
+        "date": "2026-04-20",
+        "description": "Explore the latest innovations in AI, cloud computing, and DevOps. Connect with industry leaders and gain insights into the technologies shaping tomorrow.",
+        "createdAt": "2026-02-12T00:00:00.000Z"
+    },
+    {
+        "id": "evt-003",
+        "title": "Creative Code Workshop",
+        "date": "2026-05-10",
+        "description": "An immersive workshop where art meets technology. Learn to create stunning generative art, interactive installations, and dynamic web experiences using code.",
+        "createdAt": "2026-02-12T00:00:00.000Z"
+    }
+]
