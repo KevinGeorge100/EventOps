@@ -1,0 +1,338 @@
+<%- include('partials/header', { title: title, hideNav: true }) %>
+
+    <div class="ep">
+        <!-- ═══ Sticky Mini Nav ══════════════════════════════ -->
+        <nav class="ep-nav">
+            <div class="ep-nav-inner">
+                <a href="/" class="ep-back">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Back
+                </a>
+                <a href="/" class="logo">
+                    <span class="logo-badge">Event</span><span class="logo-badge logo-badge-alt">Ops</span>
+                </a>
+                <button class="ep-share-btn"
+                    onclick="navigator.clipboard.writeText(window.location.href); this.innerHTML='✓ Copied!';">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="18" cy="5" r="3" />
+                        <circle cx="6" cy="12" r="3" />
+                        <circle cx="18" cy="19" r="3" />
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                    </svg>
+                    Share
+                </button>
+            </div>
+        </nav>
+
+        <% const now=new Date(); now.setHours(0,0,0,0); const eventDate=new Date(event.date); const
+            isUpcoming=eventDate>= now;
+            const daysAway = Math.ceil((eventDate - new Date()) / (1000*60*60*24));
+            const dateOpts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const shortMonth = eventDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+            const dayNum = eventDate.getDate();
+            const highlightsList = (event.highlights || '').split(',').map(h => h.trim()).filter(Boolean);
+            const tagsList = (event.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+            %>
+
+            <!-- ═══ Hero Section ═════════════════════════════════ -->
+            <section class="ep-hero <%= event.banner ? 'has-banner' : '' %>">
+                <% if (event.banner) { %>
+                    <div class="ep-hero-banner-bg">
+                        <img src="<%= event.banner %>" alt="" class="ep-hero-banner-img">
+                        <div class="ep-hero-banner-overlay"></div>
+                    </div>
+                    <% } else { %>
+                        <div class="ep-hero-bg"></div>
+                        <% } %>
+                            <div class="ep-hero-content">
+                                <div class="ep-hero-emoji">
+                                    <%= event.image || '🎪' %>
+                                </div>
+                                <div class="ep-hero-badges">
+                                    <span class="ep-cat-badge">
+                                        <%= event.category || 'Event' %>
+                                    </span>
+                                    <span
+                                        class="ep-status-badge <%= isUpcoming ? 'ep-status-live' : 'ep-status-past' %>">
+                                        <span class="ep-status-dot"></span>
+                                        <%= isUpcoming ? 'Upcoming' : 'Completed' %>
+                                    </span>
+                                    <% if (event.ticketPrice && event.ticketPrice !=='Free' ) { %>
+                                        <span class="ep-price-badge">₹ <%= event.ticketPrice %></span>
+                                        <% } else { %>
+                                            <span class="ep-price-badge ep-price-free">Free</span>
+                                            <% } %>
+                                </div>
+                                <h1 class="ep-title">
+                                    <%= event.title %>
+                                </h1>
+                                <p class="ep-organizer">
+                                    By <strong>
+                                        <%= event.organizer || 'EventOps' %>
+                                    </strong>
+                                    <% if (event.location && event.location !=='TBA' ) { %>
+                                        · <%= event.location %>
+                                            <% } %>
+                                </p>
+                            </div>
+            </section>
+
+            <!-- ═══ Info Pills ═══════════════════════════════════ -->
+            <div class="ep-container">
+                <div class="ep-info-row">
+                    <div class="ep-info-pill">
+                        <div class="ep-info-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+                        </div>
+                        <div>
+                            <small>Date</small>
+                            <strong>
+                                <%= eventDate.toLocaleDateString('en-US', dateOpts) %>
+                            </strong>
+                            <% if (event.endDate) { %>
+                                <span class="ep-info-sub">to <%= new Date(event.endDate).toLocaleDateString('en-US',
+                                        dateOpts) %></span>
+                                <% } %>
+                        </div>
+                    </div>
+                    <% if (event.time) { %>
+                        <div class="ep-info-pill">
+                            <div class="ep-info-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                            </div>
+                            <div>
+                                <small>Time</small>
+                                <strong>
+                                    <%= event.time %>
+                                </strong>
+                            </div>
+                        </div>
+                        <% } %>
+                            <div class="ep-info-pill">
+                                <div class="ep-info-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                        <circle cx="12" cy="10" r="3" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <small>Location</small>
+                                    <strong>
+                                        <%= event.location || 'TBA' %>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="ep-info-pill">
+                                <div class="ep-info-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                        <circle cx="9" cy="7" r="4" />
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <small>Capacity</small>
+                                    <strong>
+                                        <%= event.capacity || 100 %> seats
+                                    </strong>
+                                </div>
+                            </div>
+                </div>
+
+                <!-- ═══ CTA Button ═══════════════════════════════ -->
+                <% if (isUpcoming) { %>
+                    <div class="ep-cta-row">
+                        <% if (event.registrationUrl) { %>
+                            <a href="<%= event.registrationUrl %>" target="_blank"
+                                class="btn btn-primary btn-large ep-cta-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="8.5" cy="7" r="4" />
+                                    <line x1="20" y1="8" x2="20" y2="14" />
+                                    <line x1="23" y1="11" x2="17" y2="11" />
+                                </svg>
+                                Register Now
+                                <span class="ep-cta-arrow">→</span>
+                            </a>
+                            <% } else { %>
+                                <button class="btn btn-primary btn-large ep-cta-btn"
+                                    onclick="alert('Registration coming soon!');">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                        <circle cx="8.5" cy="7" r="4" />
+                                        <line x1="20" y1="8" x2="20" y2="14" />
+                                        <line x1="23" y1="11" x2="17" y2="11" />
+                                    </svg>
+                                    Register Now
+                                    <span class="ep-cta-arrow">→</span>
+                                </button>
+                                <% } %>
+                                    <div class="ep-cta-meta">
+                                        <span class="ep-countdown">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <polyline points="12 6 12 12 16 14" />
+                                            </svg>
+                                            <%= daysAway %> days away
+                                        </span>
+                                        <% if (event.ticketPrice && event.ticketPrice !=='Free' ) { %>
+                                            <span class="ep-ticket-price">₹ <%= event.ticketPrice %></span>
+                                            <% } else { %>
+                                                <span class="ep-ticket-free">Free Entry</span>
+                                                <% } %>
+                                    </div>
+                    </div>
+                    <% } else { %>
+                        <div class="ep-completed-banner">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                <polyline points="22 4 12 14.01 9 11.01" />
+                            </svg>
+                            This event has been completed
+                        </div>
+                        <% } %>
+
+                            <!-- ═══ About ════════════════════════════════════ -->
+                            <section class="ep-section">
+                                <h2 class="ep-section-title">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                        <line x1="16" y1="13" x2="8" y2="13" />
+                                        <line x1="16" y1="17" x2="8" y2="17" />
+                                    </svg>
+                                    About This Event
+                                </h2>
+                                <div class="ep-about-text">
+                                    <p>
+                                        <%= event.description %>
+                                    </p>
+                                </div>
+                            </section>
+
+                            <!-- ═══ Highlights ════════════════════════════════ -->
+                            <% if (highlightsList.length> 0) { %>
+                                <section class="ep-section">
+                                    <h2 class="ep-section-title">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <polygon
+                                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                        </svg>
+                                        What to Expect
+                                    </h2>
+                                    <div class="ep-highlights-grid">
+                                        <% highlightsList.forEach((hl, i)=> { %>
+                                            <div class="ep-highlight-card" style="animation-delay: <%= i * 0.08 %>s">
+                                                <div class="ep-highlight-icon">✦</div>
+                                                <span>
+                                                    <%= hl %>
+                                                </span>
+                                            </div>
+                                            <% }) %>
+                                    </div>
+                                </section>
+                                <% } %>
+
+                                    <!-- ═══ Tags ═════════════════════════════════════ -->
+                                    <% if (tagsList.length> 0) { %>
+                                        <section class="ep-section">
+                                            <h2 class="ep-section-title">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <path
+                                                        d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                                                    <line x1="7" y1="7" x2="7.01" y2="7" />
+                                                </svg>
+                                                Tags
+                                            </h2>
+                                            <div class="ep-tags-row">
+                                                <% tagsList.forEach(tag=> { %>
+                                                    <span class="ep-tag">
+                                                        <%= tag %>
+                                                    </span>
+                                                    <% }) %>
+                                            </div>
+                                        </section>
+                                        <% } %>
+
+                                            <!-- ═══ Event Details Sidebar ════════════════════ -->
+                                            <section class="ep-section">
+                                                <h2 class="ep-section-title">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2">
+                                                        <circle cx="12" cy="12" r="10" />
+                                                        <line x1="12" y1="16" x2="12" y2="12" />
+                                                        <line x1="12" y1="8" x2="12.01" y2="8" />
+                                                    </svg>
+                                                    Event Details
+                                                </h2>
+                                                <div class="ep-details-grid">
+                                                    <div class="ep-detail-item">
+                                                        <small>Category</small>
+                                                        <strong>
+                                                            <%= event.category || 'Event' %>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="ep-detail-item">
+                                                        <small>Capacity</small>
+                                                        <strong>
+                                                            <%= event.capacity || 100 %> seats
+                                                        </strong>
+                                                    </div>
+                                                    <div class="ep-detail-item">
+                                                        <small>Organizer</small>
+                                                        <strong>
+                                                            <%= event.organizer || 'EventOps' %>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="ep-detail-item">
+                                                        <small>Status</small>
+                                                        <strong class="<%= isUpcoming ? 'ep-detail-live' : '' %>">
+                                                            <%= isUpcoming ? daysAway + ' days away' : 'Event Completed'
+                                                                %>
+                                                        </strong>
+                                                    </div>
+                                                    <% if (event.ticketPrice) { %>
+                                                        <div class="ep-detail-item">
+                                                            <small>Ticket</small>
+                                                            <strong>
+                                                                <%= event.ticketPrice %>
+                                                            </strong>
+                                                        </div>
+                                                        <% } %>
+                                                            <div class="ep-detail-item">
+                                                                <small>Event ID</small>
+                                                                <strong
+                                                                    style="font-family: var(--font-primary); font-size: .78rem; color: var(--text-muted)">
+                                                                    <%= event.id %>
+                                                                </strong>
+                                                            </div>
+                                                </div>
+                                            </section>
+
+            </div><!-- .ep-container -->
+    </div><!-- .ep -->
+
+    <%- include('partials/footer') %>

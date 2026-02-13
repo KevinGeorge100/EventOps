@@ -18,3 +18,22 @@
 </head>
 
 <body>
+
+    <!-- ─── Top Navigation Bar ─────────────────────────────── -->
+    <% if (typeof hideNav==='undefined' || !hideNav) { %>
+        <nav class="site-nav" id="site-nav">
+            <div class="nav-inner">
+                <a href="/" class="logo">
+                    <span class="logo-badge">Event</span><span class="logo-badge logo-badge-alt">Ops</span>
+                </a>
+                <div class="nav-links">
+                    <a href="#events">Events</a>
+                    <a href="#">About</a>
+                    <a href="#">Pricing</a>
+                </div>
+                <div class="nav-actions">
+                    <a href="/admin" class="nav-cta">Go to Dashboard <span class="nav-cta-arrow">→</span></a>
+                </div>
+            </div>
+        </nav>
+        <% } %>

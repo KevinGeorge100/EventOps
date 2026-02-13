@@ -1,15 +1,15 @@
-<%- include('partials/header', { title: title }) %>
+<%- include('partials/header', { title: title, hideNav: true }) %>
 
     <div class="login-page">
         <div class="login-bg">
             <div class="orb orb-1"></div>
             <div class="orb orb-2"></div>
+            <div class="login-particles" id="login-particles"></div>
         </div>
         <div class="login-card">
             <div class="login-header">
-                <div class="logo">
-                    <span class="logo-icon">◆</span>
-                    <span class="logo-text">EventOps</span>
+                <div class="logo" style="justify-content: center;">
+                    <span class="logo-badge">Event</span><span class="logo-badge logo-badge-alt">Ops</span>
                 </div>
                 <h1>Welcome Back</h1>
                 <p>Sign in to access the dashboard</p>

@@ -1,46 +1,170 @@
 <%- include('partials/header', { title: title }) %>
 
-  <!-- ─── Hero Section ──────────────────────────────────── -->
-  <section class="hero">
+  <!-- ═══ Hero Section ═══════════════════════════════════ -->
+  <section class="hero" id="hero">
     <div class="hero-bg">
       <div class="orb orb-1"></div>
       <div class="orb orb-2"></div>
       <div class="orb orb-3"></div>
+      <div class="cursor-glow" id="cursor-glow"></div>
     </div>
     <div class="hero-content">
-      <p class="hero-tag">✦ Curated Event Experiences</p>
-      <h1 class="hero-title">
-        Where <span class="gradient-text">Ideas</span> Take Flight
-      </h1>
-      <p class="hero-subtitle">
-        Discover extraordinary events designed to inspire, connect, and elevate.
-        Every moment crafted with precision.
-      </p>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-number"><%= totalEvents %></span>
-          <span class="stat-label">Events</span>
+      <!-- Left Sidebar – Event Types -->
+      <div class="hero-sidebar">
+        <span class="hero-sidebar-item">Meetups</span>
+        <span class="hero-sidebar-item">Shows</span>
+        <span class="hero-sidebar-item">Fairs</span>
+        <span class="hero-sidebar-item">Recurring Events</span>
+        <span class="hero-sidebar-item">Webinars</span>
+      </div>
+
+      <!-- Center – Main Title & CTA -->
+      <div class="hero-center">
+        <h1 class="hero-title">
+          Where Events <span class="star-icon">★★</span><br>
+          Begin, and Memories<br>
+          <span class="green-text">Get Made</span> with EventOps
+        </h1>
+        <p class="hero-subtitle">
+          The all-in-one platform to <span class="typing-text" id="typing-text">create</span> extraordinary events
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-number" data-count="<%= stats.total %>">0</span>
+            <span class="stat-label">Events</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number" data-count="<%= stats.upcoming %>">0</span>
+            <span class="stat-label">Upcoming</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number" data-count="<%= stats.categories %>">0</span>
+            <span class="stat-label">Categories</span>
+          </div>
         </div>
-        <div class="stat">
-          <span class="stat-number"><%= upcomingEvents.length %></span>
-          <span class="stat-label">Upcoming</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number">∞</span>
-          <span class="stat-label">Possibilities</span>
+        <div class="hero-cta-row">
+          <a href="#events" class="cta-btn">
+            <span class="cta-circle">→</span>
+            Explore Events
+          </a>
+          <a href="/admin" class="cta-btn cta-btn-outline">
+            Go to Dashboard
+          </a>
         </div>
       </div>
-      <a href="#events" class="cta-btn">
-        Explore Events
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M7 17L17 7M17 7H7M17 7V17"/>
-        </svg>
-      </a>
+
+      <!-- Right – Trust Badge -->
+      <div class="hero-trust">
+        <p class="hero-trust-badge">Trusted by <%= stats.total %>+ organizers</p>
+        <p class="hero-trust-text">
+          — from startup expos, art shows, and community meetups to college fests and coding bootcamps.
+        </p>
+      </div>
     </div>
   </section>
 
-  <!-- ─── Upcoming Events ────────────────────────────────── -->
-  <section class="events-section" id="events">
+  <!-- ═══ Partners Strip ═════════════════════════════════ -->
+  <div class="partners-strip">
+    <div class="partners-inner">
+      <span class="partner-logo">◆IEEE</span>
+      <span class="partner-logo">FAYA:80</span>
+      <span class="partner-logo accent">EVOLVE</span>
+      <span class="partner-logo">sunbird</span>
+      <span class="partner-logo">GRAMMERS</span>
+      <span class="partner-logo accent">EkStep</span>
+      <span class="partner-logo">μLearn</span>
+      <span class="partner-logo">ACTIZO</span>
+      <span class="partner-logo accent">ScaleUp</span>
+      <span class="partner-logo">ELEVATE</span>
+      <span class="partner-logo">IN50HRS</span>
+    </div>
+  </div>
+
+  <!-- ═══ Features Section ═══════════════════════════════ -->
+  <section class="features-section scroll-reveal" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Why EventOps</span>
+        <h2 class="section-title">Everything You Need to Run Amazing Events</h2>
+        <p class="section-subtitle">Powerful features designed for organizers who demand the best</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card tilt-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Smart Event Creation</h3>
+          <p>Build and launch events in minutes with our intuitive dashboard. Add details, set capacity, and go live
+            instantly.</p>
+        </div>
+        <div class="feature-card tilt-card">
+          <div class="feature-icon">📊</div>
+          <h3>Real-time Analytics</h3>
+          <p>Track event performance, attendance, and engagement with live dashboards and detailed reporting.</p>
+        </div>
+        <div class="feature-card tilt-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Secure & Reliable</h3>
+          <p>Enterprise-grade security with session management, data encryption, and Docker-ready deployment.</p>
+        </div>
+        <div class="feature-card tilt-card">
+          <div class="feature-icon">📱</div>
+          <h3>Responsive Design</h3>
+          <p>Beautiful on every device. Your events look stunning whether viewed on desktop, tablet, or mobile.</p>
+        </div>
+        <div class="feature-card tilt-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Lightning Fast SSR</h3>
+          <p>Server-side rendered pages for blazing fast load times and superior SEO. No client-side framework overhead.
+          </p>
+        </div>
+        <div class="feature-card tilt-card">
+          <div class="feature-icon">🐳</div>
+          <h3>Docker Ready</h3>
+          <p>One-command deployment with Docker and docker-compose. Ready for production from day one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ How It Works ═══════════════════════════════════ -->
+  <section class="how-section scroll-reveal" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">How It Works</span>
+        <h2 class="section-title">From Idea to Event in 3 Steps</h2>
+        <p class="section-subtitle">Getting started with EventOps is effortless</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-step">
+          <div class="timeline-number">01</div>
+          <div class="timeline-content">
+            <h3>Create Your Event</h3>
+            <p>Log into the dashboard, fill in event details — title, date, location, category, and capacity — and hit
+              create.</p>
+          </div>
+        </div>
+        <div class="timeline-connector"></div>
+        <div class="timeline-step">
+          <div class="timeline-number">02</div>
+          <div class="timeline-content">
+            <h3>Manage & Customize</h3>
+            <p>Edit, update, or remove events anytime. Track upcoming and past events from your centralized dashboard.
+            </p>
+          </div>
+        </div>
+        <div class="timeline-connector"></div>
+        <div class="timeline-step">
+          <div class="timeline-number">03</div>
+          <div class="timeline-content">
+            <h3>Launch & Share</h3>
+            <p>Your event goes live on the public page instantly. Share the link and watch registrations roll in.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Upcoming Events ════════════════════════════════ -->
+  <section class="events-section scroll-reveal" id="events">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">Upcoming</span>
@@ -48,99 +172,278 @@
         <p class="section-subtitle">Don't miss these carefully crafted experiences</p>
       </div>
 
-      <% if (upcomingEvents.length === 0) { %>
+      <% if (upcomingEvents.length===0) { %>
         <div class="empty-state">
           <div class="empty-icon">📡</div>
           <h3>Stay Tuned</h3>
           <p>New events are being crafted. Check back soon for exciting announcements.</p>
         </div>
-      <% } else { %>
-        <div class="events-grid">
-          <% upcomingEvents.forEach((event, index) => { %>
-            <article class="event-card" style="animation-delay: <%= index * 0.1 %>s">
-              <div class="event-card-accent"></div>
-              <div class="event-card-content">
-                <div class="event-date-badge">
-                  <span class="event-month"><%= new Date(event.date).toLocaleDateString('en-US', { month: 'short' }) %></span>
-                  <span class="event-day"><%= new Date(event.date).getDate() %></span>
-                  <span class="event-year"><%= new Date(event.date).getFullYear() %></span>
-                </div>
-                <h3 class="event-title"><%= event.title %></h3>
-                <p class="event-desc"><%= event.description %></p>
-                <div class="event-footer">
-                  <span class="event-status upcoming">
-                    <span class="status-dot"></span>
-                    Upcoming
-                  </span>
-                  <span class="event-countdown">
-                    <% 
-                      const diff = Math.ceil((new Date(event.date) - new Date()) / (1000 * 60 * 60 * 24));
-                      if (diff === 0) { %>Today<% } 
-                      else if (diff === 1) { %>Tomorrow<% } 
-                      else { %><%= diff %> days away<% } %>
-                  </span>
-                </div>
-              </div>
-            </article>
-          <% }) %>
-        </div>
-      <% } %>
+        <% } else { %>
+          <div class="events-grid">
+            <% upcomingEvents.forEach((event, index)=> { %>
+              <a href="/event/<%= event.id %>" class="event-card-link">
+                <article class="event-card <%= event.banner ? 'has-banner' : '' %>"
+                  style="animation-delay: <%= index * 0.1 %>s">
+                  <% if (event.banner) { %>
+                    <div class="card-banner-wrapper">
+                      <img src="<%= event.banner %>" alt="" class="card-banner-img">
+                      <div class="card-banner-emoji">
+                        <%= event.image %>
+                      </div>
+                    </div>
+                    <% } else { %>
+                      <div class="event-card-accent"></div>
+                      <% } %>
+                        <div class="event-card-content">
+                          <div class="event-card-top">
+                            <div class="event-date-badge">
+                              <span class="event-month">
+                                <%= new Date(event.date).toLocaleDateString('en-US', { month: 'short' }) %>
+                              </span>
+                              <span class="event-day">
+                                <%= new Date(event.date).getDate() %>
+                              </span>
+                            </div>
+                            <span class="event-category-badge">
+                              <%= event.category || 'Event' %>
+                            </span>
+                          </div>
+                          <% if (!event.banner) { %>
+                            <div class="event-card-emoji">
+                              <%= event.image || '🎪' %>
+                            </div>
+                            <% } %>
+                              <h3 class="event-title">
+                                <%= event.title %>
+                              </h3>
+                              <p class="event-desc">
+                                <%= event.description.length> 120 ? event.description.substring(0, 120) + '...' :
+                                  event.description %>
+                              </p>
+                              <div class="event-meta">
+                                <span class="event-meta-item">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                  </svg>
+                                  <%= event.location || 'TBA' %>
+                                </span>
+                                <span class="event-meta-item">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                  </svg>
+                                  <%= event.capacity || 100 %> seats
+                                </span>
+                              </div>
+                              <div class="event-footer">
+                                <span class="event-status upcoming">
+                                  <span class="status-dot"></span>
+                                  Upcoming
+                                </span>
+                                <span class="event-countdown">
+                                  <% const diff=Math.ceil((new Date(event.date) - new Date()) / (1000 * 60 * 60 * 24));
+                                    if (diff===0) { %>Today<% } else if (diff===1) { %>Tomorrow<% } else { %>
+                                        <%= diff %> days away<% } %>
+                                </span>
+                              </div>
+                        </div>
+                </article>
+              </a>
+              <% }) %>
+          </div>
+          <% } %>
 
-      <!-- ─── Past Events ──────────────────────────────────── -->
-      <% if (pastEvents.length > 0) { %>
-        <div class="section-header" style="margin-top: 5rem;">
-          <span class="section-tag past-tag">Archive</span>
-          <h2 class="section-title">Past Events</h2>
-          <p class="section-subtitle">A look back at our previous experiences</p>
-        </div>
-
-        <div class="events-grid past-grid">
-          <% pastEvents.forEach((event, index) => { %>
-            <article class="event-card past-card" style="animation-delay: <%= index * 0.1 %>s">
-              <div class="event-card-accent past-accent"></div>
-              <div class="event-card-content">
-                <div class="event-date-badge past-badge">
-                  <span class="event-month"><%= new Date(event.date).toLocaleDateString('en-US', { month: 'short' }) %></span>
-                  <span class="event-day"><%= new Date(event.date).getDate() %></span>
-                  <span class="event-year"><%= new Date(event.date).getFullYear() %></span>
-                </div>
-                <h3 class="event-title"><%= event.title %></h3>
-                <p class="event-desc"><%= event.description %></p>
-                <div class="event-footer">
-                  <span class="event-status past-status">
-                    <span class="status-dot"></span>
-                    Completed
-                  </span>
-                </div>
+            <!-- Past Events -->
+            <% if (pastEvents.length> 0) { %>
+              <div class="section-header" style="margin-top: 5rem;">
+                <span class="section-tag past-tag">Archive</span>
+                <h2 class="section-title">Past Events</h2>
+                <p class="section-subtitle">A look back at our previous experiences</p>
               </div>
-            </article>
-          <% }) %>
-        </div>
-      <% } %>
+              <div class="events-grid past-grid">
+                <% pastEvents.forEach((event, index)=> { %>
+                  <a href="/event/<%= event.id %>" class="event-card-link">
+                    <article class="event-card past-card <%= event.banner ? 'has-banner' : '' %>"
+                      style="animation-delay: <%= index * 0.1 %>s">
+                      <% if (event.banner) { %>
+                        <div class="card-banner-wrapper">
+                          <img src="<%= event.banner %>" alt="" class="card-banner-img"
+                            style="filter: grayscale(100%);">
+                          <div class="card-banner-emoji">
+                            <%= event.image %>
+                          </div>
+                        </div>
+                        <% } else { %>
+                          <div class="event-card-accent past-accent"></div>
+                          <% } %>
+                            <div class="event-card-content">
+                              <div class="event-card-top">
+                                <div class="event-date-badge past-badge">
+                                  <span class="event-month">
+                                    <%= new Date(event.date).toLocaleDateString('en-US', { month: 'short' }) %>
+                                  </span>
+                                  <span class="event-day">
+                                    <%= new Date(event.date).getDate() %>
+                                  </span>
+                                </div>
+                                <span class="event-category-badge past-cat-badge">
+                                  <%= event.category || 'Event' %>
+                                </span>
+                              </div>
+                              <% if (!event.banner) { %>
+                                <div class="event-card-emoji">
+                                  <%= event.image || '🎪' %>
+                                </div>
+                                <% } %>
+                                  <h3 class="event-title">
+                                    <%= event.title %>
+                                  </h3>
+                                  <p class="event-desc">
+                                    <%= event.description.length> 120 ? event.description.substring(0, 120) + '...' :
+                                      event.description %>
+                                  </p>
+                                  <div class="event-footer">
+                                    <span class="event-status past-status">
+                                      <span class="status-dot"></span>
+                                      Completed
+                                    </span>
+                                  </div>
+                            </div>
+                    </article>
+                  </a>
+                  <% }) %>
+              </div>
+              <% } %>
     </div>
   </section>
 
-  <!-- ─── Footer ────────────────────────────────────────── -->
+  <!-- ═══ Testimonials ═══════════════════════════════════ -->
+  <section class="testimonials-section scroll-reveal">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Testimonials</span>
+        <h2 class="section-title">Loved by Organizers</h2>
+      </div>
+    </div>
+    <div class="marquee">
+      <div class="marquee-track">
+        <div class="testimonial-card">
+          <p>"EventOps made our college fest seamless. The dashboard is incredibly intuitive."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar">AS</span>
+            <div><strong>Arjun S.</strong><br><small>College Fest Organizer</small></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p>"We switched from spreadsheets to EventOps and never looked back. Game changer."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar">PK</span>
+            <div><strong>Priya K.</strong><br><small>Community Manager</small></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p>"Docker-ready deployment meant we had the platform up in production within minutes."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar">RN</span>
+            <div><strong>Rahul N.</strong><br><small>DevOps Lead</small></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p>"Clean design, fast load times, and easy management. Everything we needed."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar">MJ</span>
+            <div><strong>Meera J.</strong><br><small>Startup Founder</small></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p>"The best event management tool for hackathons. Our participants love the public page."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar">VT</span>
+            <div><strong>Vikram T.</strong><br><small>Hackathon Organizer</small></div>
+          </div>
+        </div>
+        <!-- Duplicate for infinite scroll -->
+        <div class="testimonial-card">
+          <p>"EventOps made our college fest seamless. The dashboard is incredibly intuitive."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar">AS</span>
+            <div><strong>Arjun S.</strong><br><small>College Fest Organizer</small></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p>"We switched from spreadsheets to EventOps and never looked back. Game changer."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar">PK</span>
+            <div><strong>Priya K.</strong><br><small>Community Manager</small></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p>"Docker-ready deployment meant we had the platform up in production within minutes."</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar">RN</span>
+            <div><strong>Rahul N.</strong><br><small>DevOps Lead</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA Banner ═════════════════════════════════════ -->
+  <section class="cta-section scroll-reveal">
+    <div class="container">
+      <div class="cta-banner">
+        <div class="cta-banner-content">
+          <h2>Ready to Host Your Next Event?</h2>
+          <p>Join organizers who trust EventOps to create unforgettable experiences.</p>
+        </div>
+        <a href="/admin" class="cta-btn cta-btn-large">
+          <span class="cta-circle">→</span>
+          Get Started Now
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Footer ═════════════════════════════════════════ -->
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-content">
-        <div class="footer-brand">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
           <div class="logo">
-            <span class="logo-icon">◆</span>
-            <span class="logo-text">EventOps</span>
+            <span class="logo-badge">Event</span><span class="logo-badge logo-badge-alt">Ops</span>
           </div>
-          <p class="footer-tagline">Crafting extraordinary event experiences</p>
+          <p class="footer-tagline">The all-in-one platform for creating, managing, and launching extraordinary events.
+          </p>
         </div>
-        <div class="footer-links">
-          <a href="/">Home</a>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How It Works</a>
           <a href="#events">Events</a>
           <a href="/admin">Dashboard</a>
         </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="#">Documentation</a>
+          <a href="#">API Reference</a>
+          <a href="/health">Health Check</a>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <a href="#">GitHub</a>
+          <a href="#">Twitter</a>
+          <a href="#">Email Us</a>
+        </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; <%= new Date().getFullYear() %> EventOps. All rights reserved.</p>
+        <p>&copy; <%= new Date().getFullYear() %> EventOps. Built with ♥ and Node.js</p>
       </div>
     </div>
   </footer>
 
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>

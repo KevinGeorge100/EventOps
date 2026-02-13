@@ -1,62 +1,56 @@
-<%- include('partials/header', { title: title }) %>
+<%- include('partials/header', { title: title, hideNav: true }) %>
 
-    <div class="admin-layout">
-        <!-- ─── Sidebar ──────────────────────────────────────── -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <span class="logo-icon">◆</span>
-                    <span class="logo-text">EventOps</span>
+    <div class="dash">
+        <!-- ═══ Top Bar ══════════════════════════════════════ -->
+        <header class="dash-topbar">
+            <div class="dash-topbar-inner">
+                <div class="dash-topbar-left">
+                    <a href="/" class="logo">
+                        <span class="logo-badge">Event</span><span class="logo-badge logo-badge-alt">Ops</span>
+                    </a>
                 </div>
-                <span class="badge">Dashboard</span>
-            </div>
-            <nav class="sidebar-nav">
-                <a href="/admin" class="nav-item active">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7" rx="1" />
-                        <rect x="14" y="3" width="7" height="7" rx="1" />
-                        <rect x="3" y="14" width="7" height="7" rx="1" />
-                        <rect x="14" y="14" width="7" height="7" rx="1" />
-                    </svg>
-                    Events
-                </a>
-                <a href="/" class="nav-item" target="_blank">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                        <polyline points="15 3 21 3 21 9" />
-                        <line x1="10" y1="14" x2="21" y2="3" />
-                    </svg>
-                    View Live Site
-                </a>
-                <a href="/admin/logout" class="nav-item nav-logout">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                        <polyline points="16 17 21 12 16 7" />
-                        <line x1="21" y1="12" x2="9" y2="12" />
-                    </svg>
-                    Logout
-                </a>
-            </nav>
-        </aside>
-
-        <!-- ─── Main Content ─────────────────────────────────── -->
-        <main class="admin-main">
-            <!-- Header -->
-            <div class="admin-header">
-                <div>
-                    <h1 class="admin-title">
-                        <%= editEvent ? '✏️ Edit Event' : '📋 Event Management' %>
-                    </h1>
-                    <p class="admin-subtitle">
-                        <%= editEvent ? 'Update the event details below' : 'Create, manage, and organize your events' %>
-                    </p>
+                <div class="dash-topbar-center">
+                    <div class="dash-search">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input type="text" id="admin-search" placeholder="Search Events" />
+                    </div>
+                    <div class="dash-tabs" id="dash-tabs">
+                        <button class="dash-tab active" data-filter="all">All Events</button>
+                        <button class="dash-tab" data-filter="upcoming">Upcoming</button>
+                        <button class="dash-tab" data-filter="past">Past</button>
+                    </div>
                 </div>
-                <div class="admin-header-actions">
-                    <span class="event-count">
-                        <%= events.length %> event<%= events.length !==1 ? 's' : '' %>
+                <div class="dash-topbar-right">
+                    <a href="/" class="dash-icon-btn" title="View Live Site" target="_blank">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                    </a>
+                    <span class="dash-user">
+                        Hi, Admin
+                        <span class="dash-avatar">A</span>
                     </span>
+                    <a href="/admin/logout" class="dash-icon-btn dash-logout-btn" title="Logout">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                    </a>
                 </div>
             </div>
+        </header>
+
+        <!-- ═══ Main Content ═════════════════════════════════ -->
+        <main class="dash-main">
 
             <!-- Alert Messages -->
             <% if (success) { %>
@@ -80,117 +74,369 @@
                         </div>
                         <% } %>
 
-                            <!-- ─── Event Form ───────────────────────────────────── -->
-                            <div class="form-card">
-                                <h2 class="form-title">
-                                    <%= editEvent ? 'Update Event' : 'Create New Event' %>
-                                </h2>
-                                <form action="<%= editEvent ? '/admin/event/' + editEvent.id : '/admin/event' %>"
-                                    method="POST" class="event-form">
-                                    <div class="form-group">
-                                        <label for="title">Event Title</label>
-                                        <input type="text" id="title" name="title"
-                                            placeholder="e.g., Antigravity Design Summit 2026"
-                                            value="<%= editEvent ? editEvent.title : '' %>" required />
+                            <!-- Stats Row -->
+                            <div class="dash-stats">
+                                <div class="dash-stat-card">
+                                    <div class="dash-stat-icon">📋</div>
+                                    <div>
+                                        <span class="dash-stat-value">
+                                            <%= stats.total %>
+                                        </span>
+                                        <span class="dash-stat-label">Total Events</span>
                                     </div>
-
-                                    <div class="form-group">
-                                        <label for="date">Event Date</label>
-                                        <input type="date" id="date" name="date"
-                                            value="<%= editEvent ? editEvent.date : '' %>" required />
+                                </div>
+                                <div class="dash-stat-card">
+                                    <div class="dash-stat-icon">🟢</div>
+                                    <div>
+                                        <span class="dash-stat-value">
+                                            <%= stats.upcoming %>
+                                        </span>
+                                        <span class="dash-stat-label">Upcoming</span>
                                     </div>
-
-                                    <div class="form-group">
-                                        <label for="description">Description</label>
-                                        <textarea id="description" name="description" rows="4"
-                                            placeholder="Describe the event, its purpose, and what attendees can expect..."
-                                            required><%= editEvent ? editEvent.description : '' %></textarea>
+                                </div>
+                                <div class="dash-stat-card">
+                                    <div class="dash-stat-icon">📁</div>
+                                    <div>
+                                        <span class="dash-stat-value">
+                                            <%= stats.past %>
+                                        </span>
+                                        <span class="dash-stat-label">Completed</span>
                                     </div>
-
-                                    <div class="form-actions">
-                                        <% if (editEvent) { %>
-                                            <a href="/admin" class="btn btn-secondary">Cancel</a>
-                                            <% } %>
-                                                <button type="submit" class="btn btn-primary">
-                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                                        stroke="currentColor" stroke-width="2">
-                                                        <% if (editEvent) { %>
-                                                            <path
-                                                                d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-                                                            <% } else { %>
-                                                                <line x1="12" y1="5" x2="12" y2="19" />
-                                                                <line x1="5" y1="12" x2="19" y2="12" />
-                                                                <% } %>
-                                                    </svg>
-                                                    <%= editEvent ? 'Update Event' : 'Create Event' %>
-                                                </button>
+                                </div>
+                                <div class="dash-stat-card">
+                                    <div class="dash-stat-icon">🏷️</div>
+                                    <div>
+                                        <span class="dash-stat-value">
+                                            <%= stats.categories %>
+                                        </span>
+                                        <span class="dash-stat-label">Categories</span>
                                     </div>
-                                </form>
+                                </div>
                             </div>
 
-                            <!-- ─── Events List ──────────────────────────────────── -->
-                            <div class="events-table-card">
-                                <h2 class="form-title">All Events</h2>
-                                <% if (events.length===0) { %>
-                                    <div class="empty-state-admin">
-                                        <div class="empty-icon">🎪</div>
-                                        <h3>No Events Yet</h3>
-                                        <p>Create your first event using the form above.</p>
+                            <!-- Section Header + Create Button -->
+                            <div class="dash-section-header">
+                                <div>
+                                    <h1 class="dash-title">
+                                        <%= editEvent ? '✏️ Edit Event' : 'My Events' %>
+                                    </h1>
+                                    <p class="dash-subtitle">
+                                        <%= editEvent ? 'Update the event details below' : events.length + ' event' +
+                                            (events.length !==1 ? 's' : '' ) + ' under your management' %>
+                                    </p>
+                                </div>
+                                <button class="btn btn-primary" id="btn-toggle-form"
+                                    onclick="document.getElementById('form-panel').classList.toggle('open')">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg>
+                                    Create Event
+                                </button>
+                            </div>
+
+                            <!-- Controls: Tabs + Search -->
+                            <div class="dash-controls">
+                                <div class="dash-tabs" id="dash-tabs">
+                                    <button class="dash-tab active" data-filter="all">All Events</button>
+                                    <button class="dash-tab" data-filter="upcoming">Upcoming</button>
+                                    <button class="dash-tab" data-filter="past">Completed</button>
+                                </div>
+                                <div class="dash-search">
+                                    <input type="text" id="admin-search" placeholder="Search events..." />
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- ═══ Event Cards Grid ═════════════════════════ -->
+                            <% if (events.length===0) { %>
+                                <div class="dash-empty">
+                                    <div class="dash-empty-icon">🎪</div>
+                                    <h3>No Events Yet</h3>
+                                    <p>Create your first event to get started.</p>
+                                    <button class="btn btn-primary"
+                                        onclick="document.getElementById('form-panel').classList.add('open')">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <line x1="12" y1="5" x2="12" y2="19" />
+                                            <line x1="5" y1="12" x2="19" y2="12" />
+                                        </svg>
+                                        Create Event
+                                    </button>
+                                </div>
+                                <% } else { %>
+                                    <div class="dash-event-grid" id="admin-events-list">
+                                        <% events.forEach(event=> { %>
+                                            <% const now=new Date(); now.setHours(0,0,0,0); const isUpcoming=new
+                                                Date(event.date)>= now;
+                                                const diff = Math.ceil((new Date(event.date) - new Date()) / (1000 * 60
+                                                * 60 * 24));
+                                                %>
+                                                <article class="dash-card <%= event.banner ? 'has-banner' : '' %>"
+                                                    data-title="<%= event.title.toLowerCase() %>"
+                                                    data-category="<%= (event.category || '').toLowerCase() %>"
+                                                    data-status="<%= isUpcoming ? 'upcoming' : 'past' %>">
+                                                    </span>
+                                                    <% if (isUpcoming) { %>
+                                                        <span class="dash-card-badge badge-active">
+                                                            <span class="badge-dot"></span>
+                                                            Active
+                                                        </span>
+                                                        <% } else { %>
+                                                            <span class="dash-card-badge badge-past">Completed</span>
+                                                            <% } %>
                                     </div>
-                                    <% } else { %>
-                                        <div class="events-list">
-                                            <% events.forEach(event=> { %>
-                                                <div class="event-row">
-                                                    <div class="event-row-info">
-                                                        <div class="event-row-date">
-                                                            <span class="row-month">
-                                                                <%= new Date(event.date).toLocaleDateString('en-US', {
-                                                                    month: 'short' }) %>
-                                                            </span>
-                                                            <span class="row-day">
-                                                                <%= new Date(event.date).getDate() %>
-                                                            </span>
-                                                        </div>
-                                                        <div class="event-row-details">
-                                                            <h4>
-                                                                <%= event.title %>
-                                                            </h4>
-                                                            <p>
-                                                                <%= event.description.length> 100 ?
-                                                                    event.description.substring(0, 100) + '...' :
-                                                                    event.description %>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="event-row-actions">
-                                                        <a href="/admin/edit/<%= event.id %>"
-                                                            class="action-btn edit-btn" title="Edit">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2">
-                                                                <path
-                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-                                                            </svg>
-                                                        </a>
-                                                        <form action="/admin/event/<%= event.id %>/delete" method="POST"
-                                                            style="display:inline;"
-                                                            onsubmit="return confirm('Delete this event?')">
-                                                            <button type="submit" class="action-btn delete-btn"
-                                                                title="Delete">
-                                                                <svg width="16" height="16" viewBox="0 0 24 24"
-                                                                    fill="none" stroke="currentColor" stroke-width="2">
-                                                                    <polyline points="3 6 5 6 21 6" />
-                                                                    <path
-                                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                                                </svg>
-                                                            </button>
-                                                        </form>
-                                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="dash-card-body">
+                                        <h3 class="dash-card-title">
+                                            <%= event.title %>
+                                        </h3>
+
+                                        <div class="dash-card-info">
+                                            <div class="dash-card-date">
+                                                <div class="dash-date-badge">
+                                                    <span class="dash-date-month">
+                                                        <%= new Date(event.date).toLocaleDateString('en-US', {
+                                                            month: 'short' }).toUpperCase() %>
+                                                    </span>
+                                                    <span class="dash-date-day">
+                                                        <%= new Date(event.date).getDate() %>
+                                                    </span>
                                                 </div>
-                                                <% }) %>
-                                        </div>
-                                        <% } %>
-                            </div>
-        </main>
-    </div>
+                                                <div class="dash-date-full">
+                                                    <span>
+                                                        <%= new Date(event.date).toLocaleDateString('en-US', {
+                                                            weekday: 'long' , day: 'numeric' , month: 'long' ,
+                                                            year: 'numeric' }) %>
+                                                    </span>
+                                                    <small>
+                                                        <%= event.category || 'Event' %> · <%= event.capacity %> seats
+                                                    </small>
+                                                </div>
+                                            </div>
 
-    <%- include('partials/footer') %>
+                                            <% if (event.location) { %>
+                                                <div class="dash-card-location">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2">
+                                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                                        <circle cx="12" cy="10" r="3" />
+                                                    </svg>
+                                                    <span>
+                                                        <%= event.location %>
+                                                    </span>
+                                                </div>
+                                                <% } %>
+                                        </div>
+
+                                        <!-- Card Actions -->
+                                        <div class="dash-card-actions">
+                                            <a href="/event/<%= event.id %>" class="dash-action-btn" target="_blank">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                                </svg>
+                                                View More
+                                            </a>
+                                            <a href="/admin/edit/<%= event.id %>" class="dash-action-btn">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                                                </svg>
+                                                Edit
+                                            </a>
+                                            <form action="/admin/event/<%= event.id %>/delete" method="POST"
+                                                style="display:inline;"
+                                                onsubmit="return confirm('Are you sure you want to delete this event?')">
+                                                <button type="submit" class="dash-action-btn dash-action-delete">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2">
+                                                        <polyline points="3 6 5 6 21 6" />
+                                                        <path
+                                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                                    </svg>
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+    </div>
+    <% }) %>
+        </div>
+        <% } %>
+            </main>
+
+            <!-- ═══ Slide-in Form Panel ══════════════════════════ -->
+            <div class="form-panel-overlay" id="form-panel-overlay"
+                onclick="document.getElementById('form-panel').classList.remove('open')"></div>
+            <aside class="form-panel <%= editEvent ? 'open' : '' %>" id="form-panel">
+                <div class="form-panel-header">
+                    <h2>
+                        <%= editEvent ? 'Edit Event' : 'Create New Event' %>
+                    </h2>
+                    <button class="form-panel-close"
+                        onclick="document.getElementById('form-panel').classList.remove('open')" title="Close">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
+                <form action="<%= editEvent ? '/admin/event/' + editEvent.id : '/admin/event' %>" method="POST"
+                    class="form-panel-body" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="title">Event Title</label>
+                        <input type="text" id="title" name="title" placeholder="e.g., Antigravity Design Summit 2026"
+                            value="<%= editEvent ? editEvent.title : '' %>" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="banner">Event Banner</label>
+                        <div class="banner-upload-area" id="banner-upload-area">
+                            <% if (editEvent && editEvent.banner) { %>
+                                <img src="<%= editEvent.banner %>" class="banner-preview" id="banner-preview"
+                                    alt="Banner" />
+                                <div class="banner-overlay" id="banner-overlay">
+                                    <span>Click or drop to replace</span>
+                                </div>
+                                <% } else { %>
+                                    <img src="" class="banner-preview" id="banner-preview" alt=""
+                                        style="display:none" />
+                                    <div class="banner-placeholder" id="banner-placeholder">
+                                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1.5">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                            <circle cx="8.5" cy="8.5" r="1.5" />
+                                            <polyline points="21 15 16 10 5 21" />
+                                        </svg>
+                                        <span>Click or drop banner image</span>
+                                        <small>PNG, JPG, WebP — Max 5MB</small>
+                                    </div>
+                                    <% } %>
+                                        <input type="file" name="banner" id="banner" accept="image/*"
+                                            class="banner-file-input" onchange="previewBanner(this)" />
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="date">Start Date</label>
+                            <input type="date" id="date" name="date" value="<%= editEvent ? editEvent.date : '' %>"
+                                required />
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">End Date</label>
+                            <input type="date" id="endDate" name="endDate"
+                                value="<%= editEvent ? (editEvent.endDate || '') : '' %>" />
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="time">Time</label>
+                            <input type="text" id="time" name="time" placeholder="e.g., 10:00 AM - 5:00 PM"
+                                value="<%= editEvent ? (editEvent.time || '') : '' %>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category" class="form-select">
+                                <% categories.forEach(cat=> { %>
+                                    <option value="<%= cat %>" <%=editEvent && editEvent.category===cat ? 'selected'
+                                        : '' %>
+                                        ><%= cat %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" name="location" placeholder="e.g., Bangalore, India"
+                                value="<%= editEvent ? editEvent.location : '' %>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="capacity">Capacity</label>
+                            <input type="number" id="capacity" name="capacity" placeholder="100" min="1"
+                                value="<%= editEvent ? editEvent.capacity : '' %>" />
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="image">Event Icon (Emoji)</label>
+                            <input type="text" id="image" name="image" placeholder="🎪" maxlength="4"
+                                value="<%= editEvent ? editEvent.image : '' %>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="organizer">Organizer</label>
+                            <input type="text" id="organizer" name="organizer" placeholder="EventOps"
+                                value="<%= editEvent ? (editEvent.organizer || '') : '' %>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="highlights">Highlights <small
+                                style="color:var(--text-muted);font-weight:400;text-transform:none">(comma-separated)</small></label>
+                        <textarea id="highlights" name="highlights" rows="2"
+                            placeholder="e.g., Keynote Speakers, Networking, Hands-on Workshop, Certificate"><%= editEvent ? (editEvent.highlights || '') : '' %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">Tags <small
+                                style="color:var(--text-muted);font-weight:400;text-transform:none">(comma-separated)</small></label>
+                        <input type="text" id="tags" name="tags" placeholder="e.g., Free, In-Person, Networking"
+                            value="<%= editEvent ? (editEvent.tags || '') : '' %>" />
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="ticketPrice">Ticket Price</label>
+                            <input type="text" id="ticketPrice" name="ticketPrice" placeholder="Free"
+                                value="<%= editEvent ? (editEvent.ticketPrice || '') : '' %>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="registrationUrl">Registration URL</label>
+                            <input type="url" id="registrationUrl" name="registrationUrl" placeholder="https://..."
+                                value="<%= editEvent ? (editEvent.registrationUrl || '') : '' %>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" name="published" id="published" class="toggle-input" <%=editEvent &&
+                                editEvent.published ? 'checked' : '' %> />
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-text">Published (visible to public)</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="5"
+                            placeholder="Describe the event, its purpose, and what attendees can expect..."
+                            required><%= editEvent ? editEvent.description : '' %></textarea>
+                    </div>
+                    <div class="form-panel-actions">
+                        <% if (editEvent) { %>
+                            <a href="/admin" class="btn btn-secondary">Cancel</a>
+                            <% } %>
+                                <button type="submit" class="btn btn-primary btn-full">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <% if (editEvent) { %>
+                                            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                                            <% } else { %>
+                                                <line x1="12" y1="5" x2="12" y2="19" />
+                                                <line x1="5" y1="12" x2="19" y2="12" />
+                                                <% } %>
+                                    </svg>
+                                    <%= editEvent ? 'Update Event' : 'Create Event' %>
+                                </button>
+                    </div>
+                </form>
+            </aside>
+            </div>
+
+            <%- include('partials/footer') %>

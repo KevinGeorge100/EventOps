@@ -4,8 +4,33 @@
 
 const express = require('express');
 const router = express.Router();
+const path = require('path');
+const multer = require('multer');
 const eventModel = require('../models/eventModel');
 const { requireAuth } = require('../middleware/auth');
+
+// ─── Multer config for banner image uploads ─────────────
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, '..', 'public', 'uploads', 'banners'));
+    },
+    filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        cb(null, `banner-${Date.now()}${ext}`);
+    }
+});
+const upload = multer({
+    storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+    fileFilter: (req, file, cb) => {
+        const allowed = /\.(jpg|jpeg|png|gif|webp|svg)$/i;
+        if (allowed.test(path.extname(file.originalname))) {
+            cb(null, true);
+        } else {
+            cb(new Error('Only image files are allowed'), false);
+        }
+    }
+});
 
 // ─── Login Page ──────────────────────────────────────────
 
@@ -56,13 +81,16 @@ router.get('/logout', (req, res) => {
 // ─── Dashboard (Protected) ──────────────────────────────
 
 /**
- * GET /admin — Render admin dashboard with all events
+ * GET /admin — Render admin dashboard with all events and stats
  */
 router.get('/', requireAuth, (req, res) => {
     const events = eventModel.getAllEvents();
+    const stats = eventModel.getEventStats();
     res.render('admin', {
         title: 'EventOps — Dashboard',
         events,
+        stats,
+        categories: eventModel.CATEGORIES,
         editEvent: null,
         success: req.query.success || null,
         error: req.query.error || null
@@ -74,6 +102,7 @@ router.get('/', requireAuth, (req, res) => {
  */
 router.get('/edit/:id', requireAuth, (req, res) => {
     const events = eventModel.getAllEvents();
+    const stats = eventModel.getEventStats();
     const editEvent = eventModel.getEventById(req.params.id);
 
     if (!editEvent) {
@@ -83,6 +112,8 @@ router.get('/edit/:id', requireAuth, (req, res) => {
     res.render('admin', {
         title: 'EventOps — Edit Event',
         events,
+        stats,
+        categories: eventModel.CATEGORIES,
         editEvent,
         success: null,
         error: null
@@ -94,16 +125,17 @@ router.get('/edit/:id', requireAuth, (req, res) => {
 /**
  * POST /admin/event — Create a new event
  */
-router.post('/event', requireAuth, (req, res) => {
-    const { title, date, description } = req.body;
+router.post('/event', requireAuth, upload.single('banner'), (req, res) => {
+    const { title, date, endDate, time, description, location, capacity, category, image, organizer, highlights, tags, ticketPrice, registrationUrl, published } = req.body;
 
     // Validation
     if (!title || !date || !description) {
-        return res.redirect('/admin?error=All+fields+are+required');
+        return res.redirect('/admin?error=Title%2C+date+and+description+are+required');
     }
 
     try {
-        eventModel.createEvent({ title, date, description });
+        const banner = req.file ? `/uploads/banners/${req.file.filename}` : '';
+        eventModel.createEvent({ title, date, endDate, time, description, location, capacity, category, image, organizer, highlights, tags, ticketPrice, registrationUrl, published, banner });
         res.redirect('/admin?success=Event+created+successfully');
     } catch (err) {
         console.error('Create event error:', err);
@@ -114,15 +146,16 @@ router.post('/event', requireAuth, (req, res) => {
 /**
  * POST /admin/event/:id — Update an existing event
  */
-router.post('/event/:id', requireAuth, (req, res) => {
-    const { title, date, description } = req.body;
+router.post('/event/:id', requireAuth, upload.single('banner'), (req, res) => {
+    const { title, date, endDate, time, description, location, capacity, category, image, organizer, highlights, tags, ticketPrice, registrationUrl, published } = req.body;
 
     if (!title || !date || !description) {
         return res.redirect(`/admin/edit/${req.params.id}?error=All+fields+are+required`);
     }
 
     try {
-        const updated = eventModel.updateEvent(req.params.id, { title, date, description });
+        const banner = req.file ? `/uploads/banners/${req.file.filename}` : undefined; // undefined = keep existing
+        const updated = eventModel.updateEvent(req.params.id, { title, date, endDate, time, description, location, capacity, category, image, organizer, highlights, tags, ticketPrice, registrationUrl, published, banner });
         if (!updated) {
             return res.redirect('/admin?error=Event+not+found');
         }
