@@ -2,6 +2,10 @@
 
 **A Dockerized SSR Dashboard & Live Site** — built with Node.js, Express, and EJS.
 
+🚀 **Live Demo:** [http://3.111.51.209](http://3.111.51.209)  
+⚙️ **Admin Panel:** [http://3.111.51.209/admin](http://3.111.51.209/admin) (Login: `admin` / `eventops2024`)  
+🔄 **CI/CD:** Automated deployment via GitHub Actions to AWS EC2.
+
 A full-stack event management platform featuring a stunning public landing page and a protected admin dashboard. Create, edit, and delete events from the dashboard, and watch them instantly appear on the live site. Fully containerized with Docker for seamless deployment.
 
 ---
@@ -62,6 +66,28 @@ docker-compose logs -f
 
 # Stop
 docker-compose down
+```
+
+### AWS EC2 Deployment
+
+The application is deployed on an **AWS EC2 Ubuntu Instance** using **Docker Compose**.
+
+- **Public IP:** `3.111.51.209`
+- **Reverse Proxy:** Nginx (Port 80 → 3000)
+- **Persistence:** Docker Volumes for `uploads` and `data`
+- **CI/CD:** GitHub Actions triggers on push to `main`
+
+#### Manual Deployment Commands
+```bash
+# SSH into server
+ssh -i "your-key.pem" ubuntu@3.111.51.209
+
+# Pull latest code
+cd ~/EventOps
+git pull origin main
+
+# Rebuild containers
+sudo docker compose up --build -d
 ```
 
 ---
