@@ -21,6 +21,8 @@ services:
     volumes:
       # Persist event data across container restarts
       - eventops-data:/app/data
+      # Persist user uploads (banners)
+      - eventops-uploads:/app/src/public/uploads
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health" ]
@@ -33,6 +35,8 @@ services:
 
 volumes:
   eventops-data:
+    driver: local
+  eventops-uploads:
     driver: local
 
 networks:
