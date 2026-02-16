@@ -18,6 +18,7 @@ services:
       - SESSION_SECRET=${SESSION_SECRET:-eventops-docker-secret-change-me}
       - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-eventops2024}
+      - COOKIE_SECURE=false
     volumes:
       # Persist event data across container restarts
       - eventops-data:/app/data
