@@ -8,8 +8,7 @@
     "dev": "nodemon src/server.js",
     "docker:build": "docker-compose build",
     "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
-    "deploy": "git push origin main"
+    "docker:down": "docker-compose down"
   },
   "keywords": [
     "events",
