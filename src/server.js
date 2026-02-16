@@ -7,9 +7,22 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// ─── Ensure Key Directories Exist ────────────────────────
+// Prevent crashes if data or upload folders are missing
+const DATA_DIR = path.join(__dirname, '..', 'data');
+const UPLOAD_DIR = path.join(__dirname, 'public', 'uploads', 'banners');
+
+[DATA_DIR, UPLOAD_DIR].forEach(dir => {
+  if (!fs.existsSync(dir)) {
+    console.log(`Creating directory: ${dir}`);
+    fs.mkdirSync(dir, { recursive: true });
+  }
+});
 
 // ─── View Engine ─────────────────────────────────────────
 app.set('view engine', 'ejs');
